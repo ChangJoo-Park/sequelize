@@ -1,20 +1,20 @@
-# Getting started
+# 시작하기
 
-## Installation
+## 설치
 
-Sequelize is available via NPM and Yarn.
+Sequelize는 NPM과 Yarn 통해 설치할 수 있습니다.
 
 ```bash
-// Using NPM
+// NPM
 $ npm install --save sequelize
 
-# And one of the following:
+# 사용할 데이터베이스에 따라 선택하세요
 $ npm install --save pg pg-hstore
 $ npm install --save mysql2
 $ npm install --save sqlite3
 $ npm install --save tedious // MSSQL
 
-// Using Yarn
+// Yarn
 $ yarn add sequelize
 
 # And one of the following:
@@ -24,7 +24,7 @@ $ yarn add sqlite3
 $ yarn add tedious // MSSQL
 ```
 
-## Setting up a connection
+## 커넥션 설정하기
 
 Sequelize will setup a connection pool on initialization so you should ideally only ever create one instance per database if you're connecting to the DB from a single process. If you're connecting to the DB from multiple processes, you'll have to create one instance per process, but each instance should have a maximum connection pool size of "max connection pool size divided by number of instances".  So, if you wanted a max connection pool size of 90 and you had 3 worker processes, each process's instance should have a max connection pool size of 30.
 
@@ -49,9 +49,9 @@ const sequelize = new Sequelize('database', 'username', 'password', {
 const sequelize = new Sequelize('postgres://user:pass@example.com:5432/dbname');
 ```
 
-The Sequelize constructor takes a whole slew of options that are available via the [API reference](/class/lib/sequelize.js~Sequelize.html).
+The Sequelize constructor takes a whole slew of options that are available via the [API reference](/class/lib/sequelize.js%7ESequelize.html).
 
-## Test the connection
+## 커넥션 테스트하기
 
 You can use the `.authenticate()` function like this to test the connection.
 
@@ -66,7 +66,7 @@ sequelize
   });
 ```
 
-## Your first model
+## 첫번째 모델 만들기
 
 Models are defined with `sequelize.define('name', {attributes}, {options})`.
 
@@ -90,9 +90,9 @@ User.sync({force: true}).then(() => {
 });
 ```
 
-You can read more about creating models at [Model API reference](/class/lib/model.js~Model.html)
+You can read more about creating models at [Model API reference](/class/lib/model.js%7EModel.html)
 
-## Your first query
+## 첫번째 쿼리 만들기
 
 ```js
 User.findAll().then(users => {
@@ -102,7 +102,7 @@ User.findAll().then(users => {
 
 You can read more about finder functions on models like `.findAll()` at [Data retrieval](/manual/tutorial/models-usage.html#data-retrieval-finders) or how to do specific queries like `WHERE` and `JSONB` at [Querying](/manual/tutorial/querying.html).
 
-### Application wide model options
+### 애플리케이션 단위 모델 설정
 
 The Sequelize constructor takes a `define` option which will be used as the default options for all defined models.
 
@@ -119,12 +119,12 @@ const Post = sequelize.define('post', {}, {
 });
 ```
 
-## Promises
+## 비동기를 위한 Promises
 
 Sequelize uses [Bluebird](http://bluebirdjs.com) promises to control async control-flow.
 
-**Note:** _Sequelize use independent copy of Bluebird instance. You can access it using
- `Sequelize.Promise` if you want to set any Bluebird specific options_
+**Note:** *Sequelize use independent copy of Bluebird instance. You can access it using
+`Sequelize.Promise` if you want to set any Bluebird specific options*
 
 If you are unfamiliar with how promises work, don't worry, you can read up on them [here](http://bluebirdjs.com/docs/why-promises.html).
 
@@ -137,7 +137,7 @@ user = User.findOne()
 console.log(user.get('firstName'));
 ```
 
-_will never work!_ This is because `user` is a promise object, not a data row from the DB. The right way to do it is:
+*will never work!* This is because `user` is a promise object, not a data row from the DB. The right way to do it is:
 
 ```js
 User.findOne().then(user => {
