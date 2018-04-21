@@ -1,4 +1,4 @@
-# Model definition
+# 모델 정의
 
 To define mappings between a model and a table, use the `define` method.
 
@@ -70,9 +70,9 @@ const Foo = sequelize.define('foo', {
 })
 ```
 
-The comment option can also be used on a table, see [model configuration][0]
+The comment option can also be used on a table, see [model configuration](/manual/tutorial/models-definition.html#configuration)
 
-## Timestamps
+## 타임스탬프
 
 By default, Sequelize will add the attributes `createdAt` and `updatedAt` to your model so you will be able to know when the database entry went into the db and when it was updated last.
 
@@ -100,10 +100,9 @@ module.exports = {
 
 ```
 
-If you do not want timestamps on your models, only want some timestamps, or you are working with an existing database where the columns are named something else, jump straight on to [configuration ][0]to see how to do that.
+If you do not want timestamps on your models, only want some timestamps, or you are working with an existing database where the columns are named something else, jump straight on to [configuration ](/manual/tutorial/models-definition.html#configuration)to see how to do that.
 
-
-## Data types
+## 자료형
 
 Below are some of the datatypes supported by sequelize. For a full and updated list, see [DataTypes](/variable/index.html#static-variable-DataTypes).
 
@@ -185,7 +184,7 @@ Sequelize.INTEGER(11).ZEROFILL.UNSIGNED // INTEGER(11) UNSIGNED ZEROFILL
 Sequelize.INTEGER(11).UNSIGNED.ZEROFILL // INTEGER(11) UNSIGNED ZEROFILL
 ```
 
-_The examples above only show integer, but the same can be done with bigint and float_
+*The examples above only show integer, but the same can be done with bigint and float*
 
 Usage in object notation:
 
@@ -199,7 +198,7 @@ sequelize.define('model', {
 })
 ```
 
-### Array(ENUM)
+### 배열(ENUM)
 
 Its only supported with PostgreSQL.
 
@@ -207,7 +206,7 @@ Array(Enum) type require special treatment. Whenever Sequelize will talk to data
 
 So this enum name must follow this pattern `enum_<table_name>_<col_name>`. If you are using `sync` then correct name will automatically be generated.
 
-### Range types
+### 범위 타입
 
 Since range types have extra information for their bound inclusion/exclusion it's not
 very straightforward to just use a tuple to represent them in javascript.
@@ -272,7 +271,7 @@ Timeline.create({ range: [-Infinity, new Date(Date.UTC(2016, 0, 1))] });
 
 ```
 
-## Deferrable
+## 지연 처리
 
 When you specify a foreign key column it is optionally possible to declare the deferrable
 type in PostgreSQL. The following options are available:
@@ -291,18 +290,18 @@ Sequelize.Deferrable.NOT
 The last option is the default in PostgreSQL and won't allow you to dynamically change
 the rule in a transaction. See [the transaction section](/manual/tutorial/transactions.html#options) for further information.
 
-## Getters & setters
+## 게터 & 세터
 
 It is possible to define 'object-property' getters and setter functions on your models, these can be used both for 'protecting' properties that map to database fields and for defining 'pseudo' properties.
 
 Getters and Setters can be defined in 2 ways (you can mix and match these 2 approaches):
 
-* as part of a single property definition
-* as part of a model options
+- as part of a single property definition
+- as part of a model options
 
 **N.B:** If a getter or setter is defined in both places then the function found in the relevant property definition will always take precedence.
 
-### Defining as part of a property
+### 속성 정의
 
 ```js
 const Employee = sequelize.define('employee', {
@@ -332,7 +331,7 @@ Employee
   })
 ```
 
-### Defining as part of the model options
+### 모델 옵션 정의
 
 Below is an example of defining the getters and setters in the model options. The `fullName` getter,  is an example of how you can define pseudo properties on your models - attributes which are not actually part of your database schema. In fact, pseudo properties can be defined in two ways: using model getters, or by using a column with the [`VIRTUAL` datatype](/variable/index.html#static-variable-DataTypes). Virtual datatypes can have validations, while getters for virtual attributes cannot.
 
@@ -362,7 +361,7 @@ const Foo = sequelize.define('foo', {
 
 ### Helper functions for use inside getter and setter definitions
 
-* retrieving an underlying property value - always use `this.getDataValue()`
+- retrieving an underlying property value - always use `this.getDataValue()`
 
 ```js
 /* a getter for 'title' property */
@@ -371,7 +370,7 @@ get() {
 }
 ```
 
-* setting an underlying property value - always use `this.setDataValue()`
+- setting an underlying property value - always use `this.setDataValue()`
 
 ```js
 /* a setter for 'title' property */
@@ -382,13 +381,13 @@ set(title) {
 
 **N.B:** It is important to stick to using the `setDataValue()` and `getDataValue()` functions (as opposed to accessing the underlying "data values" property directly) - doing so protects your custom getters and setters from changes in the underlying model implementations.
 
-## Validations
+## 검증
 
 Model validations, allow you to specify format/content/inheritance validations for each attribute of the model.
 
 Validations are automatically run on `create`, `update` and `save`. You can also call `validate()` to manually validate an instance.
 
-The validations are implemented by [validator.js][3].
+The validations are implemented by [validator.js](https://github.com/chriso/validator.js).
 
 ```js
 const ValidateMe = sequelize.define('foo', {
@@ -462,7 +461,7 @@ isIn: {
 
 When using custom validator functions the error message will be whatever message the thrown`Error`object holds.
 
-See [the validator.js project][3] for more details on the built in validation methods.
+See [the validator.js project](https://github.com/chriso/validator.js) for more details on the built in validation methods.
 
 **Hint: **You can also define a custom function for the logging part. Just pass a function. The first parameter will be the string that is logged.
 
@@ -470,7 +469,7 @@ See [the validator.js project][3] for more details on the built in validation me
 
 If a particular field of a model is set to allow null (with `allowNull: true`) and that value has been set to `null` , its validators do not run. This means you can, for instance, have a string field which validates its length to be at least 5 characters, but which also allows`null`.
 
-### Model validations
+### 모델 검증
 
 Validations can also be defined to check the model after the field-specific validators. Using this you could, for example, ensure either neither of `latitude` and `longitude` are set or both, and fail if one but not the other is set.
 
@@ -516,7 +515,7 @@ In this simple case an object fails validation if either latitude or longitude i
 }
 ```
 
-## Configuration
+## 설정
 
 You can also influence the way Sequelize handles your column names:
 
@@ -629,22 +628,21 @@ This is solved by passing in Meteor's version of `require`. So, while this proba
 ```js
 const AuthorModel = db.import('./path/to/models/project');
 ```
+
 ... this should succeed ...
 
 ```js
 const AuthorModel = db.import('project', require('./path/to/models/project'));
 ```
 
-
-
-## Optimistic Locking
+## 낙관적 잠금
 
 Sequelize has built-in support for optimistic locking through a model instance version count.
-Optimistic locking is disabled by default and can be enabled by setting the `version` property to true in a specific model definition or global model configuration.  See [model configuration][0] for more details.
+Optimistic locking is disabled by default and can be enabled by setting the `version` property to true in a specific model definition or global model configuration.  See [model configuration](/manual/tutorial/models-definition.html#configuration) for more details.
 
 Optimistic locking allows concurrent access to model records for edits and prevents conflicts from overwriting data.  It does this by checking whether another process has made changes to a record since it was read and throws an OptimisticLockError when a conflict is detected.
 
-## Database synchronization
+## 데이터베이스 동기화
 
 When starting a new project you won't have a database structure and using Sequelize you won't need to. Just specify your model structures and let the library do the rest. Currently supported is the creation and deletion of tables:
 
@@ -697,7 +695,7 @@ where `force: true` is used in tests but not live code.
 sequelize.sync({ force: true, match: /_test$/ });
 ```
 
-## Expansion of models
+## 모델 확장
 
 Sequelize Models are ES6 classes. You can very easily add custom instance or class level methods.
 
@@ -728,7 +726,8 @@ User.prototype.getFullname = function() {
 User.build({ firstname: 'foo', lastname: 'bar' }).getFullname() // 'foo bar'
 ```
 
-### Indexes
+### 인덱스
+
 Sequelize supports adding indexes to the model definition which will be created during `Model.sync()` or `sequelize.sync`.
 
 ```js
@@ -766,9 +765,3 @@ sequelize.define('user', {}, {
   ]
 })
 ```
-
-
-[0]: /manual/tutorial/models-definition.html#configuration
-[3]: https://github.com/chriso/validator.js
-[5]: /docs/final/misc#asynchronicity
-[6]: http://bluebirdjs.com/docs/api/spread.html
