@@ -26,7 +26,7 @@ $ yarn add tedious // MSSQL
 
 ## 커넥션 설정하기
 
-Sequelize will setup a connection pool on initialization so you should ideally only ever create one instance per database if you're connecting to the DB from a single process. If you're connecting to the DB from multiple processes, you'll have to create one instance per process, but each instance should have a maximum connection pool size of "max connection pool size divided by number of instances".  So, if you wanted a max connection pool size of 90 and you had 3 worker processes, each process's instance should have a max connection pool size of 30.
+Sequelize는 초기화시 커넥션 풀을 설정하므로 하나의 프로세스에서 데이터베이스에 연결하는 경우 데이터베이스 당 하나의 인스턴스만 작성하는 것이 좋습니다. 여러 프로세스에서 데이터베이스에 연결해야하는 경우 프로세스 당 하나의 인스턴스를 만들어야하지만 각 인스턴스의 최대 커넥션 풀 크기는 "최대 커넥션 풀 크기를 인스턴스 수로 나눈 값"이어야 합니다. 따라서 최대 커넥션 풀 크기가 90이고 워커 프로세스가 3개인 경우 각 프로세스의 인스턴스는 최대 커넥션 풀 크기가 30이어야 합니다.
 
 ```js
 const Sequelize = require('sequelize');
@@ -41,11 +41,11 @@ const sequelize = new Sequelize('database', 'username', 'password', {
     idle: 10000
   },
 
-  // SQLite only
+  // SQLite만 사용
   storage: 'path/to/database.sqlite'
 });
 
-// Or you can simply use a connection uri
+// 또는 커넥션 URI를 이용
 const sequelize = new Sequelize('postgres://user:pass@example.com:5432/dbname');
 ```
 
@@ -53,7 +53,7 @@ The Sequelize constructor takes a whole slew of options that are available via t
 
 ## 커넥션 테스트하기
 
-You can use the `.authenticate()` function like this to test the connection.
+커넥션 테스트를 위해 `.authenticate()` 함수를 사용할 수 있습니다.
 
 ```js
 sequelize
@@ -68,7 +68,7 @@ sequelize
 
 ## 첫번째 모델 만들기
 
-Models are defined with `sequelize.define('name', {attributes}, {options})`.
+모델은 `sequelize.define('name', {attributes}, {options})`을 이용해 정의합니다.
 
 ```js
 const User = sequelize.define('user', {
@@ -80,7 +80,7 @@ const User = sequelize.define('user', {
   }
 });
 
-// force: true will drop the table if it already exists
+// force: true 는 테이블이 이미 있으면 drop합니다.
 User.sync({force: true}).then(() => {
   // Table created
   return User.create({
@@ -90,7 +90,7 @@ User.sync({force: true}).then(() => {
 });
 ```
 
-You can read more about creating models at [Model API reference](/class/lib/model.js%7EModel.html)
+모델을 만드는 자세한 내용은 [Model API 레퍼런스](/class/lib/model.js%7EModel.html)를 읽어보세요
 
 ## 첫번째 쿼리 만들기
 
@@ -100,44 +100,43 @@ User.findAll().then(users => {
 })
 ```
 
-You can read more about finder functions on models like `.findAll()` at [Data retrieval](/manual/tutorial/models-usage.html#data-retrieval-finders) or how to do specific queries like `WHERE` and `JSONB` at [Querying](/manual/tutorial/querying.html).
+데이터 조회시 `.findAll()`과 같은 모델의 [데이터 조회](/manual/tutorial/models-usage.html#data-retrieval-finders) 또는 쿼리에 사용하는 `WHERE`와 `JSONB`를 사용할 수 있습니다.
 
 ### 애플리케이션 단위 모델 설정
 
-The Sequelize constructor takes a `define` option which will be used as the default options for all defined models.
+Sequelize 생성자는 `define` 옵션으로 모델에 대한 기본 옵션을 지정할 수 있습니다.
 
 ```js
 const sequelize = new Sequelize('connectionUri', {
   define: {
-    timestamps: false // true by default
+    timestamps: false // 기본값 true
   }
 });
 
-const User = sequelize.define('user', {}); // timestamps is false by default
+const User = sequelize.define('user', {}); // timestamps는 기본값 false
 const Post = sequelize.define('post', {}, {
-  timestamps: true // timestamps will now be true
+  timestamps: true // timestamps는 항상 true
 });
 ```
 
 ## 비동기를 위한 Promises
 
-Sequelize uses [Bluebird](http://bluebirdjs.com) promises to control async control-flow.
+Sequelize는 비동기 작업을 위해 [Bluebird](http://bluebirdjs.com) Promise를 사용합니다.
 
-**Note:** *Sequelize use independent copy of Bluebird instance. You can access it using
-`Sequelize.Promise` if you want to set any Bluebird specific options*
+**Note:** *Sequelize는 독립적인 Bluebird 인스턴스를 사용합니다. Bluebird 설정을 하려면 `Sequelize.Promise` 를 이용하세요*
 
-If you are unfamiliar with how promises work, don't worry, you can read up on them [here](http://bluebirdjs.com/docs/why-promises.html).
+Promise에 아직 익숙하지 않다면 [이 글](http://bluebirdjs.com/docs/why-promises.html)을 읽어보세요
 
-Basically, a promise represents a value which will be present at some point - "I promise you I will give you a result or an error at some point". This means that
+기본적으로 Promise는 특정 시점에 값을 전달하는 것을 말합니다. - 이 말은 "어떤 시점에 결과나 오류를 전달해줄게" 라는 말과 같습니다.
 
 ```js
-// DON'T DO THIS
+// 이렇게 사용하지 마세요.
 user = User.findOne()
 
 console.log(user.get('firstName'));
 ```
 
-*will never work!* This is because `user` is a promise object, not a data row from the DB. The right way to do it is:
+*위 코드는 절대 작동하지 않습니다!* `user`는 데이터베이스의 데이터가 아닌 Promise 객체입니다. 아래 코드가 올바른 방법입니다.
 
 ```js
 User.findOne().then(user => {
@@ -145,7 +144,7 @@ User.findOne().then(user => {
 });
 ```
 
-When your environment or transpiler supports [async/await](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/await) this will work but only in the body of an [async](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function) function:
+개발 환경이나 트랜스파일러가 [async/await](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/await) 를 지원하면  아래 코드는[async](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function) 함수에서만 작동합니다.
 
 ```js
 user = await User.findOne()
@@ -153,4 +152,4 @@ user = await User.findOne()
 console.log(user.get('firstName'));
 ```
 
-Once you've got the hang of what promises are and how they work, use the [bluebird API reference](http://bluebirdjs.com/docs/api-reference.html) as your go-to tool. In particular, you'll probably be using [`.all`](http://bluebirdjs.com/docs/api/promise.all.html) a lot.
+Promise가 무엇이고 어떻게 작동하는지 파악되었으면 [bluebird API 레퍼런스](http://bluebirdjs.com/docs/api-reference.html) 를 읽어보세요. [`.all`](http://bluebirdjs.com/docs/api/promise.all.html) 를 아마 많이 사용하게 될 것입니다.
