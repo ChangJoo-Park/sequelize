@@ -17,7 +17,7 @@ $ npm install --save tedious // MSSQL
 // Yarn
 $ yarn add sequelize
 
-# And one of the following:
+# 사용할 데이터베이스에 따라 선택하세요
 $ yarn add pg pg-hstore
 $ yarn add mysql2
 $ yarn add sqlite3
@@ -49,7 +49,7 @@ const sequelize = new Sequelize('database', 'username', 'password', {
 const sequelize = new Sequelize('postgres://user:pass@example.com:5432/dbname');
 ```
 
-The Sequelize constructor takes a whole slew of options that are available via the [API reference](/class/lib/sequelize.js%7ESequelize.html).
+Sequelize 생성자는 [API 레퍼런스](/class/lib/sequelize.js%7ESequelize.html)에 다양한 옵션을 제공합니다.
 
 ## 커넥션 테스트하기
 
