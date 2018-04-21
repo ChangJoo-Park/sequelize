@@ -1,4 +1,4 @@
-# Basic usage
+# 기본 사용 방법
 
 To get the ball rollin' you first have to create an instance of Sequelize. Use it the following way:
 
@@ -7,6 +7,7 @@ const sequelize = new Sequelize('database', 'username', 'password', {
   dialect: 'mysql'
 });
 ```
+
 This will save the passed database credentials and provide all further methods.
 
 Furthermore you can specify a non-default host/port:
@@ -38,13 +39,13 @@ const sequelize = new Sequelize('mysql://user:pass@example.com:9821/db_name', {
 })
 ```
 
-## Options
+## 옵션
 
 Besides the host and the port, Sequelize comes with a whole bunch of options. Here they are:
 
-- See [Sequelize API][2]
-- See [Model Definition][1]
-- See [Transactions][3]
+- See [Sequelize API](/class/lib/sequelize.js%7ESequelize.html)
+- See [Model Definition](/manual/tutorial/models-definition.html#configuration)
+- See [Transactions](/manual/tutorial/transactions.html)
 
 ```js
 const sequelize = new Sequelize('database', 'username', 'password', {
@@ -124,7 +125,7 @@ const sequelize = new Sequelize('database', 'username', 'password', {
 
 **Hint:** You can also define a custom function for the logging part. Just pass a function. The first parameter will be the string that is logged.
 
-## Read replication
+## 읽기 복제 (Read Replication)
 
 Sequelize supports read replication, i.e. having multiple servers that you can connect to when you want to do a SELECT query. When you do read replication, you specify one or more servers to act as read replicas, and one server to act as the write master, which handles all writes and updates and propagates them to the replicas (note that the actual replication process is **not** handled by Sequelize, but should be set up by database backend).
 
@@ -154,7 +155,7 @@ If you want to modify these, you can pass pool as an options when instantiating 
 
 Each `write` or `useMaster: true` query will use write pool. For `SELECT` read pool will be used. Read replica are switched using a basic round robin scheduling.
 
-## Dialects
+## 방언 (Dialects)
 
 With the release of Sequelize `1.6.0`, the library got independent from specific dialects. This means, that you'll have to add the respective connector library to your project yourself.
 
@@ -169,7 +170,7 @@ const sequelize = new Sequelize('database', 'username', 'password', {
 ```
 
 **Note:** You can pass options directly to dialect library by setting the
-`dialectOptions` parameter. See [Options][0]
+`dialectOptions` parameter. See [Options](/docs/latest/usage#options)
 for examples (currently only mysql is supported).
 
 ### SQLite
@@ -228,12 +229,12 @@ const sequelize = new Sequelize('database', 'username', 'password', {
 })
 ```
 
-## Executing raw SQL queries
+## 원시 SQL 쿼리 실행
 
 As there are often use cases in which it is just easier to execute raw / already prepared SQL queries, you can utilize the function `sequelize.query`.
 
-- See [Sequelize.query API][5]
-- See [Query Types][4]
+- See [Sequelize.query API](/class/lib/sequelize.js%7ESequelize.html#instance-method-query)
+- See [Query Types](/variable/index.html#static-variable-QueryTypes)
 
 Here is how it works:
 
@@ -290,10 +291,8 @@ named parameters (starting with `:`), or unnamed, represented by a ?
 
 The syntax used depends on the replacements option passed to the function:
 
-* If an array is passed, `?` will be replaced in the order that they appear in the array
-* If an object is passed, `:key` will be replaced with the keys from that object.
-If the object contains keys not found in the query or vice versa, an exception
-will be thrown.
+- If an array is passed, `?` will be replaced in the order that they appear in the array
+- If an object is passed, `:key` will be replaced with the keys from that object.If the object contains keys not found in the query or vice versa, an exceptionwill be thrown.
 
 ```js
 sequelize
@@ -332,11 +331,3 @@ sequelize.query('select 1 as `foo.bar.baz`').then(rows => {
   */
 })
 ```
-
-
-[0]: /docs/latest/usage#options
-[1]: /manual/tutorial/models-definition.html#configuration
-[2]: /class/lib/sequelize.js~Sequelize.html
-[3]: /manual/tutorial/transactions.html
-[4]: /variable/index.html#static-variable-QueryTypes
-[5]: /class/lib/sequelize.js~Sequelize.html#instance-method-query
